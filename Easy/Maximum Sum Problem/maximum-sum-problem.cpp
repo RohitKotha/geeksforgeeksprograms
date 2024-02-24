@@ -8,15 +8,12 @@ class Solution
     public:
         int maxSum(int n)
         {
-            //code here.
-           if(n==0){
-               return 0;
-           }
-        int a=n/2;
-        int b=n/3;
-        int c=n/4;
-        int sum=a+b+c;
-        return max({n,sum,maxSum(a)+maxSum(b)+maxSum(c)});
+        if(n==0){
+           return 0;
+        }
+          
+       
+        return max({n,n/2+n/3+n/4,maxSum(n/2)+maxSum(n/3)+maxSum(n/4)});
         }
 };
 
