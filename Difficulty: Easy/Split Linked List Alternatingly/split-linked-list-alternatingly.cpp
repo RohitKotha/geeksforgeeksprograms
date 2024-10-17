@@ -30,33 +30,35 @@ struct Node
 class Solution {
   public:
     // Function to split a linked list into two lists alternately
-    vector<Node*> alternatingSplitList(struct Node* head) {
-        if (!head) return {NULL, NULL};  // If the list is empty
-        if (!head->next) return {head, NULL};  // If there's only one node
+      vector<Node*> alternatingSplitList(struct Node* head) {
+        // Your code here
+        Node* t1=head;
+        Node*k1=t1;
+        Node* temp=head;
+        if(temp->next==NULL){
+            return {t1,NULL};
+        }
+        Node* t2=head->next;
+        Node*k2=t2;
         
-        Node* t1 = head;
-        Node* k1 = t1;  // First list head
-        Node* t2 = head->next;
-        Node* k2 = t2;  // Second list head
-        
-        Node* temp = t2->next;  // Start from the third node
-        
-        while (temp) {
-            t1->next = temp;  // Add to the first list
-            t1 = t1->next;
-            temp = temp->next;  // Move to the next node
+        temp=t2->next;
+        while(temp){
+            t1->next=temp;
+            t1=t1->next;
             
-            if (temp) {
-                t2->next = temp;  // Add to the second list
-                t2 = t2->next;
-                temp = temp->next;  // Move to the next node
+            temp=temp->next;
+            if(temp){
+                
+                t2->next=temp;
+                t2=t2->next;
+                
+                temp=temp->next;
+                
             }
         }
-        
-        t1->next = NULL;  // Terminate the first list
-        t2->next = NULL;  // Terminate the second list
-        
-        return {k1, k2};
+        t1->next=NULL;
+        t2->next=NULL;
+        return {k1,k2};
     }
 };
 
