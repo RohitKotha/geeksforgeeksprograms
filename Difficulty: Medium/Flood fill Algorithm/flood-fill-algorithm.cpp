@@ -5,40 +5,32 @@ using namespace std;
 
 // } Driver Code Ends
 
+
+// in dfs
 class Solution {
-public:
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
-        int n = image.size(), m = image[0].size();
-        int oldColor = image[sr][sc];
-
-        if (oldColor == newColor) return image; 
-
-        vector<vector<int>> vis(n, vector<int>(m, 0));
-        queue<pair<int, int>> q1;
-        q1.push({sr, sc});
-        vis[sr][sc] = 1;
-        image[sr][sc] = newColor;
-
-        int dRow[] = {-1, 1, 0, 0};
-        int dCol[] = {0, 0, -1, 1};
-
-        while (!q1.empty()) {
-            int nr = q1.front().first;
-            int nc = q1.front().second;
-            q1.pop();
-
-            for (int i = 0; i < 4; i++) {
-                int nro = nr + dRow[i];
-                int nco = nc + dCol[i];
-
-                if (nro >= 0 && nro < n && nco >= 0 && nco < m && !vis[nro][nco] && image[nro][nco] == oldColor) {
-                    vis[nro][nco] = 1;
-                    image[nro][nco] = newColor;
-                    q1.push({nro, nco});
-                }
-            }
-        }
-        return image;
+  public:
+  void dfs(int sr,int sc, vector<vector<int>>& ans,vector<vector<int>>& image, int newColor, int delrow[], int delcol[],int inicolor){
+      ans[sr][sc]=newColor;
+      int n=image.size();
+      int m=image[0].size();
+      for(int i=0;i<4;i++){
+          int nr=sr+delrow[i];
+          int nc=sc+delcol[i];
+          if(nr>=0 and nr<n and nc>=0 and nc<m and image[nr][nc]==inicolor and ans[nr][nc]!=newColor){
+               dfs(nr,nc,ans,image,newColor,delrow,delcol,inicolor);
+          }
+      }
+  }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc,
+                                  int newColor) {
+        // Code here
+        
+        int inicolor=image[sr][sc];
+        vector<vector<int>>ans =image;
+        int delrow[]={-1,0,+1,0};
+        int delcol[]={0,+1,0,-1};
+        dfs(sr,sc,ans,image,newColor,delrow,delcol,inicolor);
+        return ans;
     }
 };
 
