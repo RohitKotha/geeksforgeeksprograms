@@ -6,40 +6,45 @@ using namespace std;
 // } Driver Code Ends
 
 class Solution {
-public:
-    bool dfs(int i, int n, vector<vector<int>>& adj, int path[], int vis[]) {
-        vis[i] = 1;
-        path[i] = 1;
-        for (auto it : adj[i]) {
-            if (!vis[it]) {
-                if (dfs(it, n, adj, path, vis)) {
-                    return true;
-                }
-            } else if (path[it]) {
-                return true;
+  public:
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        // code here
+          vector<vector<int>>adj(V);
+         for(int i=0;i<edges.size();i++){
+             int u=edges[i][0];
+             int v=edges[i][1];
+             adj[u].push_back(v);
+         }
+         
+        int indegree[V]={0};
+        for(int i=0;i<V;i++){
+            for(int j=0;j<adj[i].size();j++){
+                indegree[adj[i][j]]++;
             }
         }
-        path[i] = 0;
-        return false;
-    }
-
-    bool isCyclic(int V, vector<vector<int>>& adj) {
-        vector<vector<int>> adjok(V);
-        for(int i=0;i<adj.size();i++){
-            int u=adj[i][0];
-            int v=adj[i][1];
-            adjok[u].push_back(v);
-        }
-        int vis[V] = {0};
-        int path[V] = {0};
-        for (int i = 0; i < V; i++) {
-            if (!vis[i]) {
-                if (dfs(i, V, adjok, path, vis)) {
-                    return true;
-                }
+        queue<int>q1;
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
+                q1.push(i);
             }
         }
-        return false;
+        vector<int>ans;
+        while(!q1.empty()){
+            int node=q1.front();
+            q1.pop();
+            ans.push_back(node);
+            for(auto it:adj[node]){
+                indegree[it]--;
+                 if(indegree[it]==0){
+                q1.push(it);
+            }
+            }
+            
+        }
+        if(ans.size()==V){
+            return false;
+        }
+        return true;
     }
 };
 
